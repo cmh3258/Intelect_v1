@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  RssFeedTableViewController.h
 //  VoteMart_v1
 //
 //  Created by Recommenu on 3/19/14.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface RssFeedTableViewController : UITableViewController<NSXMLParserDelegate>
 
 @end
