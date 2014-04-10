@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B2EEECB18F2EF1900BCCE06 /* MyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EEECA18F2EF1900BCCE06 /* MyManager.m */; };
+		3B2EEECF18F5ADB300BCCE06 /* ZipScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EEECE18F5ADB300BCCE06 /* ZipScreenViewController.m */; };
 		3B5B639518E1CAE60019E348 /* NSDate+InternetDateTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B5B639418E1CAE60019E348 /* NSDate+InternetDateTime.m */; };
 		3B5B639818E1DBD60019E348 /* RssDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B5B639718E1DBD50019E348 /* RssDetailViewController.m */; };
 		3B7BDB7918E88BF90084A7B7 /* CustomTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B7BDB5318E88BF80084A7B7 /* CustomTableViewController.m */; };
@@ -14,6 +16,15 @@
 		3B7BDB8518E88D050084A7B7 /* CandidateListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B7BDB8218E88D050084A7B7 /* CandidateListViewController.m */; };
 		3B7BDB8618E88D050084A7B7 /* CandidateCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B7BDB8418E88D050084A7B7 /* CandidateCell.m */; };
 		3B7BDB8918E88DA90084A7B7 /* CandidateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B7BDB8818E88DA90084A7B7 /* CandidateViewController.m */; };
+		3B7BDB9018EB79690084A7B7 /* OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3B7BDB8B18EB79670084A7B7 /* OFL.txt */; };
+		3B7BDB9118EB79690084A7B7 /* PT_Sans-Web-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B7BDB8C18EB79680084A7B7 /* PT_Sans-Web-Bold.ttf */; };
+		3B7BDB9218EB79690084A7B7 /* PT_Sans-Web-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B7BDB8D18EB79680084A7B7 /* PT_Sans-Web-BoldItalic.ttf */; };
+		3B7BDB9318EB79690084A7B7 /* PT_Sans-Web-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B7BDB8E18EB79680084A7B7 /* PT_Sans-Web-Italic.ttf */; };
+		3B7BDB9418EB79690084A7B7 /* PT_Sans-Web-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B7BDB8F18EB79680084A7B7 /* PT_Sans-Web-Regular.ttf */; };
+		3B9A6BE818EEFC5500E0CF60 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B9A6BE718EEFC5500E0CF60 /* SWRevealViewController.m */; };
+		3B9A6BEB18EF049800E0CF60 /* SideBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B9A6BEA18EF049800E0CF60 /* SideBarViewController.m */; };
+		3B9A6BEE18F06B3500E0CF60 /* PageContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B9A6BED18F06B3500E0CF60 /* PageContentViewController.m */; };
+		3B9A6BF118F06CF100E0CF60 /* QuizViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B9A6BF018F06CF100E0CF60 /* QuizViewController.m */; };
 		3BDDC57D18DA2DA4005CAE08 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BDDC57C18DA2DA4005CAE08 /* Foundation.framework */; };
 		3BDDC57F18DA2DA5005CAE08 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BDDC57E18DA2DA5005CAE08 /* CoreGraphics.framework */; };
 		3BDDC58118DA2DA5005CAE08 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BDDC58018DA2DA5005CAE08 /* UIKit.framework */; };
@@ -59,6 +70,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3B2EEEC918F2EF1800BCCE06 /* MyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyManager.h; sourceTree = "<group>"; };
+		3B2EEECA18F2EF1900BCCE06 /* MyManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyManager.m; sourceTree = "<group>"; };
+		3B2EEECD18F5ADB300BCCE06 /* ZipScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZipScreenViewController.h; path = ../ZipScreenViewController.h; sourceTree = "<group>"; };
+		3B2EEECE18F5ADB300BCCE06 /* ZipScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZipScreenViewController.m; path = ../ZipScreenViewController.m; sourceTree = "<group>"; };
 		3B5B639318E1CAE60019E348 /* NSDate+InternetDateTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+InternetDateTime.h"; sourceTree = "<group>"; };
 		3B5B639418E1CAE60019E348 /* NSDate+InternetDateTime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+InternetDateTime.m"; sourceTree = "<group>"; };
 		3B5B639618E1DBD50019E348 /* RssDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RssDetailViewController.h; sourceTree = "<group>"; };
@@ -73,6 +88,19 @@
 		3B7BDB8418E88D050084A7B7 /* CandidateCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CandidateCell.m; sourceTree = "<group>"; };
 		3B7BDB8718E88DA90084A7B7 /* CandidateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CandidateViewController.h; sourceTree = "<group>"; };
 		3B7BDB8818E88DA90084A7B7 /* CandidateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CandidateViewController.m; sourceTree = "<group>"; };
+		3B7BDB8B18EB79670084A7B7 /* OFL.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OFL.txt; sourceTree = "<group>"; };
+		3B7BDB8C18EB79680084A7B7 /* PT_Sans-Web-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PT_Sans-Web-Bold.ttf"; sourceTree = "<group>"; };
+		3B7BDB8D18EB79680084A7B7 /* PT_Sans-Web-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PT_Sans-Web-BoldItalic.ttf"; sourceTree = "<group>"; };
+		3B7BDB8E18EB79680084A7B7 /* PT_Sans-Web-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PT_Sans-Web-Italic.ttf"; sourceTree = "<group>"; };
+		3B7BDB8F18EB79680084A7B7 /* PT_Sans-Web-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PT_Sans-Web-Regular.ttf"; sourceTree = "<group>"; };
+		3B9A6BE618EEFC5500E0CF60 /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
+		3B9A6BE718EEFC5500E0CF60 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
+		3B9A6BE918EF049800E0CF60 /* SideBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SideBarViewController.h; sourceTree = "<group>"; };
+		3B9A6BEA18EF049800E0CF60 /* SideBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SideBarViewController.m; sourceTree = "<group>"; };
+		3B9A6BEC18F06B3400E0CF60 /* PageContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageContentViewController.h; sourceTree = "<group>"; };
+		3B9A6BED18F06B3500E0CF60 /* PageContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageContentViewController.m; sourceTree = "<group>"; };
+		3B9A6BEF18F06CF100E0CF60 /* QuizViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuizViewController.h; sourceTree = "<group>"; };
+		3B9A6BF018F06CF100E0CF60 /* QuizViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuizViewController.m; sourceTree = "<group>"; };
 		3BDDC57918DA2DA4005CAE08 /* Intelect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Intelect.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BDDC57C18DA2DA4005CAE08 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3BDDC57E18DA2DA5005CAE08 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -156,6 +184,47 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3B2EEECC18F5AD7900BCCE06 /* Quiz */ = {
+			isa = PBXGroup;
+			children = (
+				3B9A6BEC18F06B3400E0CF60 /* PageContentViewController.h */,
+				3B9A6BED18F06B3500E0CF60 /* PageContentViewController.m */,
+				3B9A6BEF18F06CF100E0CF60 /* QuizViewController.h */,
+				3B9A6BF018F06CF100E0CF60 /* QuizViewController.m */,
+			);
+			name = Quiz;
+			sourceTree = "<group>";
+		};
+		3B2EEED018F5B14A00BCCE06 /* Zip Screen */ = {
+			isa = PBXGroup;
+			children = (
+				3B2EEECD18F5ADB300BCCE06 /* ZipScreenViewController.h */,
+				3B2EEECE18F5ADB300BCCE06 /* ZipScreenViewController.m */,
+			);
+			name = "Zip Screen";
+			sourceTree = "<group>";
+		};
+		3B7BDB8A18EB78BD0084A7B7 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				3B7BDB8B18EB79670084A7B7 /* OFL.txt */,
+				3B7BDB8C18EB79680084A7B7 /* PT_Sans-Web-Bold.ttf */,
+				3B7BDB8D18EB79680084A7B7 /* PT_Sans-Web-BoldItalic.ttf */,
+				3B7BDB8E18EB79680084A7B7 /* PT_Sans-Web-Italic.ttf */,
+				3B7BDB8F18EB79680084A7B7 /* PT_Sans-Web-Regular.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		3B9A6BE518EEFC5500E0CF60 /* SWRevealViewController */ = {
+			isa = PBXGroup;
+			children = (
+				3B9A6BE618EEFC5500E0CF60 /* SWRevealViewController.h */,
+				3B9A6BE718EEFC5500E0CF60 /* SWRevealViewController.m */,
+			);
+			path = SWRevealViewController;
+			sourceTree = "<group>";
+		};
 		3BDDC57018DA2DA4005CAE08 = {
 			isa = PBXGroup;
 			children = (
@@ -191,11 +260,19 @@
 		3BDDC58218DA2DA5005CAE08 /* Intelect_v1 */ = {
 			isa = PBXGroup;
 			children = (
+				3B9A6BE518EEFC5500E0CF60 /* SWRevealViewController */,
+				3B7BDB8A18EB78BD0084A7B7 /* Resources */,
 				3B5B639318E1CAE60019E348 /* NSDate+InternetDateTime.h */,
 				3B5B639418E1CAE60019E348 /* NSDate+InternetDateTime.m */,
 				3BDDC58B18DA2DA5005CAE08 /* AppDelegate.h */,
 				3BDDC58C18DA2DA5005CAE08 /* AppDelegate.m */,
 				3BDDC58E18DA2DA5005CAE08 /* Main.storyboard */,
+				3B2EEECC18F5AD7900BCCE06 /* Quiz */,
+				3B2EEED018F5B14A00BCCE06 /* Zip Screen */,
+				3B2EEECA18F2EF1900BCCE06 /* MyManager.m */,
+				3B2EEEC918F2EF1800BCCE06 /* MyManager.h */,
+				3B9A6BE918EF049800E0CF60 /* SideBarViewController.h */,
+				3B9A6BEA18EF049800E0CF60 /* SideBarViewController.m */,
 				3B5B639618E1DBD50019E348 /* RssDetailViewController.h */,
 				3B5B639718E1DBD50019E348 /* RssDetailViewController.m */,
 				3BDDC5EB18DA2E89005CAE08 /* RssCell.h */,
@@ -375,9 +452,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B7BDB9118EB79690084A7B7 /* PT_Sans-Web-Bold.ttf in Resources */,
 				3BDDC59518DA2DA5005CAE08 /* Images.xcassets in Resources */,
+				3B7BDB9318EB79690084A7B7 /* PT_Sans-Web-Italic.ttf in Resources */,
 				3BDDC58718DA2DA5005CAE08 /* InfoPlist.strings in Resources */,
+				3B7BDB9018EB79690084A7B7 /* OFL.txt in Resources */,
+				3B7BDB9418EB79690084A7B7 /* PT_Sans-Web-Regular.ttf in Resources */,
 				3BDDC59018DA2DA5005CAE08 /* Main.storyboard in Resources */,
+				3B7BDB9218EB79690084A7B7 /* PT_Sans-Web-BoldItalic.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -399,8 +481,10 @@
 				3BDDC5C518DA2DFD005CAE08 /* AFHTTPRequestOperation.m in Sources */,
 				3BDDC5E418DA2E12005CAE08 /* UIImageView+AFNetworking.m in Sources */,
 				3BDDC5C618DA2DFD005CAE08 /* AFHTTPRequestOperationManager.m in Sources */,
+				3B9A6BEB18EF049800E0CF60 /* SideBarViewController.m in Sources */,
 				3BDDC5E518DA2E12005CAE08 /* UIProgressView+AFNetworking.m in Sources */,
 				3BDDC5C818DA2DFD005CAE08 /* AFNetworkReachabilityManager.m in Sources */,
+				3B9A6BEE18F06B3500E0CF60 /* PageContentViewController.m in Sources */,
 				3BDDC5CC18DA2DFD005CAE08 /* AFURLResponseSerialization.m in Sources */,
 				3B5B639818E1DBD60019E348 /* RssDetailViewController.m in Sources */,
 				3BDDC5CA18DA2DFD005CAE08 /* AFURLConnectionOperation.m in Sources */,
@@ -417,10 +501,14 @@
 				3BDDC5E218DA2E12005CAE08 /* UIAlertView+AFNetworking.m in Sources */,
 				3BDDC5CB18DA2DFD005CAE08 /* AFURLRequestSerialization.m in Sources */,
 				3BDDC5E018DA2E12005CAE08 /* AFNetworkActivityIndicatorManager.m in Sources */,
+				3B9A6BF118F06CF100E0CF60 /* QuizViewController.m in Sources */,
 				3BDDC5CD18DA2DFD005CAE08 /* AFURLSessionManager.m in Sources */,
 				3BDDC58D18DA2DA5005CAE08 /* AppDelegate.m in Sources */,
+				3B2EEECB18F2EF1900BCCE06 /* MyManager.m in Sources */,
+				3B9A6BE818EEFC5500E0CF60 /* SWRevealViewController.m in Sources */,
 				3B5B639518E1CAE60019E348 /* NSDate+InternetDateTime.m in Sources */,
 				3BDDC5EA18DA2E5E005CAE08 /* RssFeedTableViewController.m in Sources */,
+				3B2EEECF18F5ADB300BCCE06 /* ZipScreenViewController.m in Sources */,
 				3BDDC5ED18DA2E89005CAE08 /* RssCell.m in Sources */,
 				3BDDC58918DA2DA5005CAE08 /* main.m in Sources */,
 				3B7BDB7A18E88BF90084A7B7 /* CustonCell.m in Sources */,

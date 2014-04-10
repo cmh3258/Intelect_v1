@@ -1,6 +1,6 @@
 //
 //  CustomTableViewController.m
-//  VoteSmart_v2.2
+//  Intelect_v1
 //
 //  Created by Recommenu on 2/18/14.
 //  Copyright (c) 2014 YeddieJones. All rights reserved.
@@ -10,19 +10,22 @@
 #import "CustonCell.h"
 #import "AFNetworking.h"
 #import "CandidateListViewController.h"
+#import "SWRevealViewController.h"
+
 static NSString * const BaseURLString = @"http://www.raywenderlich.com/demos/weather_sample/";
 
 @interface CustomTableViewController ()
 
 @property(strong) NSDictionary *weather;
 @property(strong) NSArray *sideBar;
+@property (nonatomic, strong) NSMutableArray *electionYear;
 
 @end
 
 @implementation CustomTableViewController
 @synthesize electionNameArray = _electionNameArray;
 @synthesize electionIdArray = _electionIdArray;
-
+@synthesize electionYear = _electionYear;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -51,16 +54,48 @@ static NSString * const BaseURLString = @"http://www.raywenderlich.com/demos/wea
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
+    /*
+     *  Need to check to see if they have done the quiz
+     */
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"HasDoneQuiz"])
+    {
+        // This is the first launch ever
+        NSLog(@"Hasnt done quiz");
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oh No!" message:@"You have not taken the quiz, press okay to continue" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+        // optional - add more buttons:
+        //[alert addButtonWithTitle:@"Yes"];
+        [alert show];
+        
+    }
+    else
+    {
+    
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
+        self.SideBarButton.tintColor = [UIColor colorWithWhite:0.96f alpha:0.2f];
+        [self.navigationController.navigationBar setTranslucent:NO];
+        
+        
+        // Set the side bar button action. When it's tapped, it'll show up the sidebar.
+        [self.SideBarButton setTarget: self.revealViewController];
+        [self.SideBarButton setAction: @selector( revealToggle: )];
+        [self.navigationController.navigationBar addGestureRecognizer: self.revealViewController.panGestureRecognizer];
+        
+        // Set the gesture
+        [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
+        
+        
+    _electionYear = [[NSMutableArray alloc] init];
     
     
     _sideBar = @[@"a",@"b",@"c",@"d",@"e",@"f",@"g",@"h",@"i",@"j",@"k",@"l",@"m",@"n",@"o",@"p",@"q",@"r",@"s",@"t",@"u",@"v",@"w",@"x",@"y",@"z"];
+    
     
     
     _carModels = @[@"Volt",
@@ -71,7 +106,10 @@ static NSString * const BaseURLString = @"http://www.raywenderlich.com/demos/wea
     
     //NSString *string = [NSString stringWithFormat:@"%@weather.php?format=json", BaseURLString];
     //NSString *string = [NSString stringWithFormat:@"http://api.votesmart.org/Election.getElectionByZip?key=%@&zip5=78705", votesmartID];//, self.enteredEmailAddress];
-    NSURL *baseURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://api.votesmart.org/Election.getElectionByZip?o=JSON&key=%@&zip5=78705", votesmartID]];
+    
+    NSString *zipCode = [[NSUserDefaults standardUserDefaults] stringForKey:@"zipCode"];
+    
+    NSURL *baseURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://api.votesmart.org/Election.getElectionByZip?o=JSON&key=%@&zip5=%@", votesmartID, zipCode]];
 
  //   NSURL *url = [NSURL URLWithString:string];
     NSURLRequest *request = [NSURLRequest requestWithURL:baseURL];
@@ -81,7 +119,7 @@ static NSString * const BaseURLString = @"http://www.raywenderlich.com/demos/wea
     operation.responseSerializer = [AFJSONResponseSerializer serializer];
     
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
+
         // 3
         self.weather = (NSDictionary *)responseObject;
         NSLog(@"%@",self.weather);
@@ -95,10 +133,12 @@ static NSString * const BaseURLString = @"http://www.raywenderlich.com/demos/wea
             
             NSString *electionid = [cb objectForKey:@"electionId"];
             NSString *name = [cb objectForKey:@"name"];
+            NSString *year = [cb objectForKey:@"electionYear"];
         
             [self.electionIdArray addObject:electionid];
             [self.electionNameArray addObject:name];
-            NSLog(@"Anser: %@ , %@", electionid, name);
+            [self.electionYear addObject:year];
+            NSLog(@"Anser: %@ , %@, %@", electionid, name, year);
         }
         self.title = @"JSON Retrieved";
         NSLog(@"%i", self.electionIdArray.count);
@@ -122,7 +162,7 @@ static NSString * const BaseURLString = @"http://www.raywenderlich.com/demos/wea
     
     // 5
     [operation start];
-    
+    }
  
 }
 
@@ -139,6 +179,23 @@ static NSString * const BaseURLString = @"http://www.raywenderlich.com/demos/wea
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSLog(@"the is the alertView");
+    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+    
+    if([title isEqualToString:@"Okay"])
+    {
+        NSLog(@"Button 1 was selected.");
+        UIViewController * vc = [self.storyboard instantiateViewControllerWithIdentifier:@"quizPage"];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    else if([title isEqualToString:@"Cancel"])
+    {
+        NSLog(@"Button 2 was selected.");
+    }
 }
 
 #pragma mark - Table view data source
@@ -163,8 +220,13 @@ static NSString * const BaseURLString = @"http://www.raywenderlich.com/demos/wea
     
     // Configure the cell...
     long row = [indexPath row];
-    cell.carModel.numberOfLines=0;
+    cell.carModel.numberOfLines = 0;
     cell.carModel.text = _electionNameArray[row];
+    //cell.electionYear.text = _electionYear[row];
+    
+    cell.carModel.font = [UIFont fontWithName:@"PTSans-Bold" size:16];
+    cell.carModel.numberOfLines = 2;
+    
     
     return cell;
 }

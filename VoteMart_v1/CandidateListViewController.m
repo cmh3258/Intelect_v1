@@ -1,6 +1,6 @@
 //
 //  CandidateListViewController.m
-//  VoteSmart_v2.2
+//  Intelect_v1
 //
 //  Created by Recommenu on 2/18/14.
 //  Copyright (c) 2014 YeddieJones. All rights reserved.
@@ -409,6 +409,11 @@
     cell.partyName.text = [_electionPartyArr objectAtIndex:indexPath.row];
     
     //[self.finalCandId addObject:[newer objectAtIndex:3]];
+    
+    cell.ballotName.font = [UIFont fontWithName:@"PTSans-Bold" size:16];
+    cell.positionName.font = [UIFont fontWithName:@"PTSans-Regular" size:12];
+    cell.partyName.font = [UIFont fontWithName:@"PTSans-Regular" size:11];
+    //cell.ballotName.numberOfLines = 2;
     
     return cell;
 }

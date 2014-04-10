@@ -1,6 +1,6 @@
 //
 //  AppDelegate.m
-//  VoteMart_v1
+//  Intelect_v1
 //
 //  Created by Recommenu on 3/19/14.
 //  Copyright (c) 2014 YeddieJones. All rights reserved.
@@ -12,9 +12,21 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
     // Override point for customization after application launch.
     //[[UINavigationBar appearance] setBarTintColor:[UIColor yellowColor]];
-    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:(20/256.0) green:(255/256.0) blue:(20/256.0) alpha:(1.0)]];
+    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:(36/256.0) green:(36/256.0) blue:(46/256.0) alpha:(1.0)]];
+    [[UINavigationBar appearance] setTitleTextAttributes: [NSDictionary dictionaryWithObjectsAndKeys:
+                    [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0], NSForegroundColorAttributeName,
+                        NULL, NSShadowAttributeName,
+                        [UIFont fontWithName:@"PTSans-Bold" size:21.0], NSFontAttributeName, nil]];
+    UIPageControl *pageControl = [UIPageControl appearance];
+    pageControl.pageIndicatorTintColor = [UIColor lightGrayColor];
+    pageControl.currentPageIndicatorTintColor = [UIColor blackColor];
+    pageControl.backgroundColor = [UIColor whiteColor];
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    
     return YES;
 }
 							

@@ -1,6 +1,6 @@
 //
 //  CandidateViewController.m
-//  VoteSmart_v2.2
+//  Intelect_v1
 //
 //  Created by Recommenu on 2/19/14.
 //  Copyright (c) 2014 YeddieJones. All rights reserved.
@@ -43,39 +43,54 @@
         
         // 3
         self.weather = (NSDictionary *)responseObject;
-        //NSLog(@"%@",self.weather);
+        NSLog(@"%@",self.weather);
         NSDictionary *dict = [self.weather objectForKey:@"bio"];
         NSDictionary *candidateInfo = [dict objectForKey:@"candidate"];
         NSDictionary *electionInfo = [dict objectForKey:@"election"];
         //NSLog(@"newy: %@", candidateInfo);
         
         //NSLog(@"next newy: %@", [candidateInfo objectForKey:@"education"]);
-        NSString *a = [candidateInfo objectForKey:@"homeCity"];
-        NSString *b = [candidateInfo objectForKey:@"orgMembership"];
-        NSString *c = [candidateInfo objectForKey:@"photo"];
-        NSString *d = [candidateInfo objectForKey:@"profession"];
-
-        NSString *e = [electionInfo objectForKey:@"ballotName"];
-        NSString *f = [electionInfo objectForKey:@"office"];
-        NSString *g = [electionInfo objectForKey:@"parties"];
-        NSString *h = [electionInfo objectForKey:@"status"];
+        NSString *fname = [candidateInfo objectForKey:@"firstName"];
+        NSString *lname = [candidateInfo objectForKey:@"lastName"];
+        NSString *photo = [candidateInfo objectForKey:@"photo"];
+        NSString *education = [candidateInfo objectForKey:@"education"];
+        NSString *family = [candidateInfo objectForKey:@"family"];
+        NSString *orgMembership = [candidateInfo objectForKey:@"orgMembership"];
+        NSString *profession = [candidateInfo objectForKey:@"profession"];
+        NSString *religion = [candidateInfo objectForKey:@"religion"];
         
-        NSURL * imageURL = [NSURL URLWithString:c];
+        NSString *office = [electionInfo objectForKey:@"office"];
+        NSString *officeType = [electionInfo objectForKey:@"officeType"];
+        NSString *parties = [electionInfo objectForKey:@"parties"];
+        NSString *status = [electionInfo objectForKey:@"status"];
+        
+        NSLog(@"f: %@, l: %@", fname, lname);
+        //NSLog(@"%@, %@, %@, %@, %@, %@, %@, %@",a,b,c,d,e,f,g,h);
+        
+        NSURL * imageURL = [NSURL URLWithString:photo];
         NSData * imageData = [NSData dataWithContentsOfURL:imageURL];
         UIImage * image = [UIImage imageWithData:imageData];
         
-        self.candidateName.text = e;
-        self.candidateBirthPlace.text = d;
-        self.candidateF.text = f;
-        self.candidateGroups.text = c;
-        self.candidateImage.image = image;
+        NSString *fullname = [fname stringByAppendingString:@" "];
+        fullname = [fullname stringByAppendingString:lname];
         
-        //self.title = @"JSON Retrieved";
-        //NSLog(@"%i", self.electionIdArray.count);
-        //NSLog(@"%i", self.electionNameArray.count);
-        NSLog(@"(CVC) ballotName: %@", e);
-        //NSLog(@"finished %@, %@, %@, %@, %@, %@, %@, %@", a, b, c, d, e, f, g, h);
-        //[self.tableView reloadData];
+        NSMutableString *infoFull = [NSMutableString stringWithString:@" "];
+        [infoFull appendString: family];
+        [infoFull appendString: @" "];
+        [infoFull appendString: education];
+        
+        //cell.summaryRSS.font = [UIFont fontWithName:@"PTSans-Regular" size:12];
+        //cell.summaryRSS.numberOfLines = 2;
+        
+        NSLog(@"infofull: %@", infoFull);
+        
+        self.candidateName.text = fullname;
+        self.candidateBirthPlace.text = education;
+        self.candidateF.text = office;
+        self.candidateGroups.text = infoFull;
+        self.candidateGroups.numberOfLines = 0;
+        
+        self.candidateImage.image = image;
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         

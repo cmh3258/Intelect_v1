@@ -1,6 +1,6 @@
 //
 //  RssFeedTableViewController.m
-//  VoteMart_v1
+//  Intelect_v1
 //
 //  Created by Chris Hume on 3/19/14.
 //  Copyright (c) 2014 YeddieJones. All rights reserved.
@@ -11,6 +11,7 @@
 #import "AFNetworking.h"
 #import "NSDate+InternetDateTime.h"
 #import "RssDetailViewController.h"
+#import "SWRevealViewController.h"
 
 @interface RssFeedTableViewController ()
 {
@@ -50,11 +51,45 @@
 {
     [super viewDidLoad];
 
+    /*
+     *  Detecting first launch
+     */
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"HasLaunchedOnce"])
+    {
+        // app already launched
+        NSLog(@"app already launched");
+    
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasLaunchedOnce"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        // This is the first launch ever
+        NSLog(@"first launch ever");
+        
+        UIViewController * vc = [self.storyboard instantiateViewControllerWithIdentifier:@"zipScreen"];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    else
+    {
+        
+    [self.navigationController setNavigationBarHidden:NO];
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    // Change button color
+    self.sideBarButton.tintColor = [UIColor colorWithWhite:0.96f alpha:0.2f];
+    [self.navigationController.navigationBar setTranslucent:NO];
+
+    
+    // Set the side bar button action. When it's tapped, it'll show up the sidebar.
+    [self.sideBarButton setTarget: self.revealViewController];
+    [self.sideBarButton setAction: @selector( revealToggle: )];
+    [self.navigationController.navigationBar addGestureRecognizer: self.revealViewController.panGestureRecognizer];
+    
+    // Set the gesture
+    [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
+    
     feedCount = 0;
     feeds = @[@"Volt",
                    @"Mini",
@@ -67,12 +102,13 @@
     
     listOfFeeds = @[
                     @"http://www.opensecrets.org/news/atom.xml",
-                    
                     @"http://rss.cnn.com/rss/cnn_allpolitics.rss",
                     @"http://www.npr.org/rss/rss.php?id=1014",
                     @"http://rssfeeds.usatoday.com/TP-OnPolitics",
                     @"http://feeds.feedburner.com/projectvotesmart"
                     ];
+
+    
     
     //feed://rss.cnn.com/rss/cnn_topstories.rss
     //feed://rss.cnn.com/rss/cnn_allpolitics.rss
@@ -174,6 +210,7 @@
     
     }
 
+}
 
 - (void)didReceiveMemoryWarning
 {
@@ -209,7 +246,8 @@
     //cell.titleRSS.text = [feeds objectAtIndex:indexPath.row];
    
     cell.titleRSS.text = [[feeder objectAtIndex:indexPath.row] objectForKey: @"title"];
-
+    
+    
     //cell.titleRSS.text = @"Test";
     //cell.titleRSS.numberOfLines = 2;
     
@@ -226,6 +264,12 @@
         cell.summaryRSS.text = dummy;
     else
         cell.summaryRSS.text = summy;
+    
+    cell.titleRSS.font = [UIFont fontWithName:@"PTSans-Bold" size:16];
+    cell.titleRSS.numberOfLines = 2;
+    //cell.titleRSS.lineBreakMode = UILineBreakModeWordWrap;
+    cell.summaryRSS.font = [UIFont fontWithName:@"PTSans-Regular" size:12];
+    cell.summaryRSS.numberOfLines = 2;
     
    // cell.summaryRSS.text = @"";
 
