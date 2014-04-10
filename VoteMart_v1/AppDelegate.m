@@ -12,12 +12,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    //[UIColor colorWithRed:(0/255.0) green:(204/255.0) blue:(102/255.0) alpha:1].CGColor]
     
     // Override point for customization after application launch.
     //[[UINavigationBar appearance] setBarTintColor:[UIColor yellowColor]];
     [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:(36/256.0) green:(36/256.0) blue:(46/256.0) alpha:(1.0)]];
     [[UINavigationBar appearance] setTitleTextAttributes: [NSDictionary dictionaryWithObjectsAndKeys:
-                    [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0], NSForegroundColorAttributeName,
+                    [UIColor colorWithRed:0/255.0 green:204/255.0 blue:102/255.0 alpha:1.0], NSForegroundColorAttributeName,
                         NULL, NSShadowAttributeName,
                         [UIFont fontWithName:@"PTSans-Bold" size:21.0], NSFontAttributeName, nil]];
     UIPageControl *pageControl = [UIPageControl appearance];
