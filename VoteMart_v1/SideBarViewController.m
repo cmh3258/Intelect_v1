@@ -28,17 +28,20 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    /*
+     *  Set the Colors of SideBar
+     */
     self.view.backgroundColor = [UIColor colorWithWhite:0.2f alpha:1.0f];
-    self.tableView.backgroundColor = [UIColor colorWithWhite:0.2f alpha:1.0f];
+    self.tableView.backgroundColor = [UIColor grayColor];
     self.tableView.separatorColor = [UIColor colorWithWhite:0.15f alpha:0.2f];
     
-    
-    NSLog(@"got to here uhuh");
-    
-    _menuItems = @[@"title", @"news", @"comments", @"party"];
-    
-    NSLog(@"here");
+    /*
+     *  Set SideBar items
+     */
+    _menuItems = @[@"title", @"news", @"comments", @"party",@"changeZip",@"register",@"gov"];
     [self.tableView reloadData];
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -62,61 +65,51 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
-    NSLog(@"got count: %i" , [self.menuItems count]);
     return [self.menuItems count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //NSString *cellI = [self.menuItems objectAtIndex:indexPath.row];
-    //static NSString *CellIdentifier = [self.menuItems objectAtIndex:indexPath.row];
-    
     static NSString *CellIdentifier = @"Cell";
-    
     switch ( indexPath.row )
     {
         case 0:
             CellIdentifier = @"title";
             break;
-            
         case 1:
             CellIdentifier = @"news";
             break;
-            
         case 2:
             CellIdentifier = @"comments";
             break;
-            
         case 3:
             CellIdentifier = @"party";
             break;
+        case 4:
+            CellIdentifier = @"changeZip";
+            break;
+        case 5:
+            CellIdentifier = @"register";
+            break;
+        case 6:
+            CellIdentifier = @"gov";
+            break;
     }
     
-    //NSLog(@"cellI; %@", cellI);
+    /*
+     *  Configure the cell
+     */
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    
-    // Configure the cell...
-    
+    cell.backgroundColor = [UIColor grayColor];
+    cell.textLabel.textColor = [UIColor whiteColor];
+    [cell.textLabel setFont:[UIFont fontWithName:@"PTSans-Regular" size:14]];
+
     return cell;
 }
 
 - (void) prepareForSegue: (UIStoryboardSegue *) segue sender: (id) sender
 {
-    // configure the destination view controller:
-    /*
-    if ( [segue.destinationViewController isKindOfClass: [ColorViewController class]] &&
-        [sender isKindOfClass:[UITableViewCell class]] )
-    {
-        UILabel* c = [(SWUITableViewCell *)sender label];
-        ColorViewController* cvc = segue.destinationViewController;
-        
-        cvc.color = c.textColor;
-        cvc.text = c.text;
-    }
-     */
-    
-    // configure the segue.
+
     if ( [segue isKindOfClass: [SWRevealViewControllerSegue class]] )
     {
         SWRevealViewControllerSegue* rvcs = (SWRevealViewControllerSegue*) segue;

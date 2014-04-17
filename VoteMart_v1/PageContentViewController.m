@@ -13,8 +13,8 @@
 @interface PageContentViewController ()
 {
     BOOL lastPage;
+    BOOL flip;
 }
-
 @end
 
 @implementation PageContentViewController
@@ -34,15 +34,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
-    
-    //[[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:(136/256.0) green:(136/256.0) blue:(46/256.0) alpha:(1.0)]];
-    //[UINavigationBar appearance] setTitleTextAttributes:<#(NSDictionary *)#>
     
     self.titleLabel.font = [UIFont fontWithName:@"PTSans-Bold" size:16];
     self.titleLabel.text = self.titleText;
     self.titleLabel.numberOfLines = 3;
-    //NSLog(@"this is it: %@", [self.testing objectAtIndex:3]);
     
     [self initializeButtonColor:buttonA];
     [self initializeButtonColor:buttonB];
@@ -51,6 +46,54 @@
     
     if(_pageIndex == 11)
         lastPage = TRUE;
+    if ((_pageIndex == 2)||(_pageIndex == 3)||(_pageIndex == 8)||(_pageIndex == 9)||(_pageIndex == 11)) {
+        flip = TRUE;
+    }
+    else{
+        flip = FALSE;
+    }
+    MyManager *sharedManager = [MyManager sharedManager];
+    NSMutableArray *the = sharedManager.theArray;
+    NSNumber *t = the[_pageIndex];
+    if(t.integerValue==2)
+    {
+        if (flip) {
+            buttonA.backgroundColor = [UIColor colorWithRed:(0/255.0) green:(204/255.0) blue:(102/255.0) alpha:1];
+        }
+        else{
+            buttonD.backgroundColor = [UIColor colorWithRed:(0/255.0) green:(204/255.0) blue:(102/255.0) alpha:1];
+        }
+    }
+    if(t.integerValue==1)
+    {
+        if (flip) {
+            buttonB.backgroundColor = [UIColor colorWithRed:(0/255.0) green:(204/255.0) blue:(102/255.0) alpha:1];
+        }
+        else{
+            buttonC.backgroundColor = [UIColor colorWithRed:(0/255.0) green:(204/255.0) blue:(102/255.0) alpha:1];
+        }
+    }
+    if(t.integerValue==-1)
+    {
+        if (flip) {
+            buttonC.backgroundColor = [UIColor colorWithRed:(0/255.0) green:(204/255.0) blue:(102/255.0) alpha:1];
+        }
+        else{
+            buttonB.backgroundColor = [UIColor colorWithRed:(0/255.0) green:(204/255.0) blue:(102/255.0) alpha:1];
+        }
+    }
+    if(t.integerValue==-2)
+    {
+        if (flip) {
+            buttonD.backgroundColor = [UIColor colorWithRed:(0/255.0) green:(204/255.0) blue:(102/255.0) alpha:1];
+        }
+        else{
+            buttonA.backgroundColor = [UIColor colorWithRed:(0/255.0) green:(204/255.0) blue:(102/255.0) alpha:1];
+        }
+    }
+
+    
+    self.view.backgroundColor = [UIColor colorWithRed:(160/255.0) green:(160/255.0) blue:(160/255.0) alpha:1];
     
 }
 
@@ -60,56 +103,39 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)buttonOne:(id)sender {
-    UIButton *button = (UIButton *)sender;
-    [button setBackgroundColor:[UIColor redColor]];
-    
-    MyManager *sharedManager = [MyManager sharedManager];
-    NSMutableArray *the = sharedManager.theArray;
-    [the replaceObjectAtIndex:_pageIndex withObject:@"ONE"];
-    
-    NSInteger count = 0;
-    for (NSString *tes in the){
-        NSLog(@"array print(the) %i (%i): %@", count, _pageIndex, tes);
-        count += 1;
-    }
-}
-
-- (IBAction)buttonTwo:(id)sender {
-    MyManager *sharedManager = [MyManager sharedManager];
-    NSMutableArray *the = sharedManager.theArray;
-    [the replaceObjectAtIndex:_pageIndex withObject:@"TWO"];
-    
-    NSInteger count = 0;
-    for (NSString *tes in the){
-        NSLog(@"array print(the) %i (%i): %@", count, _pageIndex, tes);
-        count += 1;
-    }
-}
-
 -(void)initializeButtonColor:(UIButton *)button{
     [[button layer] setBorderWidth:2.0f];
-    [[button titleLabel] setFont:[UIFont fontWithName:@"PTSans-Regular" size:16]];
-    [[button layer] setBorderColor:[UIColor colorWithRed:(0/255.0) green:(204/255.0) blue:(102/255.0) alpha:1].CGColor];
-    [button setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    button.layer.cornerRadius = 10; // this value vary as per your desire
+    [[button titleLabel] setFont:[UIFont fontWithName:@"PTSans-Bold" size:16]];
+    [[button layer] setBorderColor:[UIColor colorWithRed:(64/255.0) green:(64/255.0) blue:(64/255.0) alpha:1].CGColor];
+    [[button layer] setBackgroundColor:[UIColor colorWithRed:(230/255.0) green:(230/255.0) blue:(230/255.0) alpha:1].CGColor];
+    [button setTitleColor:[UIColor colorWithRed:(50/255.0) green:(50/255.0) blue:(50/255.0) alpha:1] forState:UIControlStateNormal];
+    button.layer.cornerRadius = 10;
     button.clipsToBounds = YES;
 }
 
 -(void)setButtonColor:sender{
     UIButton *button = (UIButton *)sender;
     [[button layer] setBackgroundColor:[UIColor colorWithRed:(0/255.0) green:(204/255.0) blue:(102/255.0) alpha:1].CGColor];
-    //[button setBackgroundColor:[UIColor colorWithRed:(0/255.0) green:(204/255.0) blue:(102/255.0) alpha:1].CGColor];
-    //[button setBackgroundColor: [UIColor clearColor]];
-    
+    //NSInteger *counter = [self getCount];
+    /*
     if(lastPage)
     {
         NSLog(@"should be last page.");
         [self checkDone];
     }
+     */
+    [self checkDone];
 }
 
-- (NSString *) getParty
+-(NSInteger)getCount
+{
+    NSInteger num = 0;
+    
+    
+    return num;
+}
+
+- (NSString *)getParty
 {
     MyManager *sharedManager = [MyManager sharedManager];
     NSMutableArray *the = sharedManager.theArray;
@@ -122,53 +148,63 @@
         totalCount += myInteger;
     }
     
-    if (totalCount<=-20) {
+    
+    if (totalCount<=-20)
+    {
         yoParty = @"Very Liberal Democrat";
         sharedManager.yourParty = @"Very Liberal Democrat";
+        sharedManager.yourPartySimple = @"Democratic";
     }
-    else if (totalCount<=-12) {
+    else if (totalCount<=-12)
+    {
         yoParty = @"Liberal Democrat";
         sharedManager.yourParty = @"Liberal Democrat";
+        sharedManager.yourPartySimple = @"Democratic";
     }
-    else if (totalCount<=-2) {
+    else if (totalCount<=-2)
+    {
         yoParty = @"Moderate Democrat";
         sharedManager.yourParty = @"Moderate Democrat";
+        sharedManager.yourPartySimple = @"Democratic";
     }
-    else if (totalCount<2) {
+    else if (totalCount<2)
+    {
         yoParty = @"Independent";
         sharedManager.yourParty = @"Independent";
+        sharedManager.yourPartySimple = @"Independent";
     }
-    else if (totalCount<12) {
+    else if (totalCount<12)
+    {
         yoParty = @"Moderate Republican";
         sharedManager.yourParty = @"Moderate Republican";
+        sharedManager.yourPartySimple = @"Republican";
     }
-    else if (totalCount<20) {
+    else if (totalCount<20)
+    {
         yoParty = @"Conservative Republican";
         sharedManager.yourParty = @"Conservative Republican";
+        sharedManager.yourPartySimple = @"Republican";
     }
-    else {
+    else
+    {
         yoParty = @"Very Conservative Republican";
         sharedManager.yourParty = @"Very Conservative Republican";
+        sharedManager.yourPartySimple = @"Republican";
     }
     
     NSLog(@"set the userdefaults(pagecontroller)");
     [[NSUserDefaults standardUserDefaults] setObject:sharedManager.yourParty forKey:@"yourParty"];
+    [[NSUserDefaults standardUserDefaults] setObject:sharedManager.yourPartySimple forKey:@"yourPartySimple"];
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasDoneQuiz"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-
     return yoParty;
 }
 
 - (void)checkDone
 {
-    NSLog(@"@]]--checkDone");
-    
     MyManager *sharedManager = [MyManager sharedManager];
     NSMutableArray *the = sharedManager.theArray;
-    
-    //NSString *answer = nil;
-    //NSUInteger index = [namesArray indexOfObject:[NSNumber numberWithInt:0]];
-    
+
     /*
      *  Looking to see if user answered every question
      */
@@ -191,18 +227,20 @@
         //call algorithm
         NSString *yoParty = [self getParty];
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Congradulations!" message:yoParty delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
-        // optional - add more buttons:
-        [alert addButtonWithTitle:@"Yes"];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Congradulations!" message:yoParty delegate:self cancelButtonTitle:@"Continue" otherButtonTitles:nil];
+        //optional - add more buttons:
+        //[alert addButtonWithTitle:@"Yes"];
+        [self getParty];
         [alert show];
     }
-    else
+    else if (lastPage)
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"You missed one." message:@"Do you really want to reset this game?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"You missed one." message:@"Go back and Answer the question." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
         // optional - add more buttons:
-        [alert addButtonWithTitle:@"Yes"];
+        //[alert addButtonWithTitle:@"Yes"];
         [alert show];
     }
+
 }
 
 /*
@@ -213,10 +251,10 @@
     NSLog(@"the is the alertView");
     NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
     
-    if([title isEqualToString:@"Yes"])
+    if([title isEqualToString:@"Continue"])
     {
         NSLog(@"Button 1 was selected.");
-        UIViewController * vc = [self.storyboard instantiateViewControllerWithIdentifier:@"rssFeed"];
+        UIViewController * vc = [self.storyboard instantiateViewControllerWithIdentifier:@"electionView"];
         [self.navigationController pushViewController:vc animated:YES];
     }
     else if([title isEqualToString:@"Cancel"])
@@ -230,17 +268,24 @@
     
     MyManager *sharedManager = [MyManager sharedManager];
     NSMutableArray *the = sharedManager.theArray;
-    [the replaceObjectAtIndex:_pageIndex withObject:[NSNumber numberWithInt:2]];
+    //[the replaceObjectAtIndex:_pageIndex withObject:[NSNumber numberWithInt:2]];
+    if(flip)
+    {
+        [the replaceObjectAtIndex:_pageIndex withObject:[NSNumber numberWithInt:2]];
+    }
+    else{
+        [the replaceObjectAtIndex:_pageIndex withObject:[NSNumber numberWithInt:-2]];
+    }
     
     NSInteger count = 0;
     for (NSString *tes in the){
-        NSLog(@"array print(the) %i (%i): %@", count, _pageIndex, tes);
+        NSLog(@"array print(the) %li (%lu): %@", (long)count, (unsigned long)_pageIndex, tes);
         count += 1;
     }
-    
-    [buttonB setBackgroundColor:[UIColor clearColor]];
-    [buttonC setBackgroundColor:[UIColor clearColor]];
-    [buttonD setBackgroundColor:[UIColor clearColor]];
+
+    [buttonB setBackgroundColor:[UIColor colorWithRed:(230/255.0) green:(230/255.0) blue:(230/255.0) alpha:1]];
+    [buttonC setBackgroundColor:[UIColor colorWithRed:(230/255.0) green:(230/255.0) blue:(230/255.0) alpha:1]];
+    [buttonD setBackgroundColor:[UIColor colorWithRed:(230/255.0) green:(230/255.0) blue:(230/255.0) alpha:1]];
     
 }
 - (IBAction)actionB:(id)sender {
@@ -248,51 +293,75 @@
     
     MyManager *sharedManager = [MyManager sharedManager];
     NSMutableArray *the = sharedManager.theArray;
-    [the replaceObjectAtIndex:_pageIndex withObject:[NSNumber numberWithInt:1]];
+    //[the replaceObjectAtIndex:_pageIndex withObject:[NSNumber numberWithInt:1]];
+    if(flip)
+    {
+        [the replaceObjectAtIndex:_pageIndex withObject:[NSNumber numberWithInt:1]];
+    }
+    else{
+        [the replaceObjectAtIndex:_pageIndex withObject:[NSNumber numberWithInt:-1]];
+    }
     
     NSInteger count = 0;
-    for (NSString *tes in the){
-        NSLog(@"array print(the) %i (%i): %@", count, _pageIndex, tes);
+    for (NSString *tes in the)
+    {
+        NSLog(@"array print(the) %li (%lu): %@", (long)count, (unsigned long)_pageIndex, tes);
         count += 1;
     }
     
-    [buttonA setBackgroundColor:[UIColor clearColor]];
-    [buttonC setBackgroundColor:[UIColor clearColor]];
-    [buttonD setBackgroundColor:[UIColor clearColor]];
+    [buttonA setBackgroundColor:[UIColor colorWithRed:(230/255.0) green:(230/255.0) blue:(230/255.0) alpha:1]];
+    [buttonC setBackgroundColor:[UIColor colorWithRed:(230/255.0) green:(230/255.0) blue:(230/255.0) alpha:1]];
+    [buttonD setBackgroundColor:[UIColor colorWithRed:(230/255.0) green:(230/255.0) blue:(230/255.0) alpha:1]];
 }
 - (IBAction)actionC:(id)sender {
    [self setButtonColor:(id)sender];
     
     MyManager *sharedManager = [MyManager sharedManager];
     NSMutableArray *the = sharedManager.theArray;
-    [the replaceObjectAtIndex:_pageIndex withObject:[NSNumber numberWithInt:-1]];
-    
-    NSInteger count = 0;
-    for (NSString *tes in the){
-        NSLog(@"array print(the) %i (%i): %@", count, _pageIndex, tes);
-        count += 1;
+    //[the replaceObjectAtIndex:_pageIndex withObject:[NSNumber numberWithInt:-1]];
+    if (flip) {
+        [the replaceObjectAtIndex:_pageIndex withObject:[NSNumber numberWithInt:-1]];
+    }
+    else{
+        [the replaceObjectAtIndex:_pageIndex withObject:[NSNumber numberWithInt:1]];
     }
     
-    [buttonB setBackgroundColor:[UIColor clearColor]];
-    [buttonA setBackgroundColor:[UIColor clearColor]];
-    [buttonD setBackgroundColor:[UIColor clearColor]];
+    NSInteger count = 0;
+    for (NSString *tes in the)
+    {
+        NSLog(@"array print(the) %li (%lu): %@", (long)count, (unsigned long)_pageIndex, tes);
+        count += 1;
+        
+    }
+    
+    [buttonB setBackgroundColor:[UIColor colorWithRed:(230/255.0) green:(230/255.0) blue:(230/255.0) alpha:1]];
+    [buttonA setBackgroundColor:[UIColor colorWithRed:(230/255.0) green:(230/255.0) blue:(230/255.0) alpha:1]];
+    [buttonD setBackgroundColor:[UIColor colorWithRed:(230/255.0) green:(230/255.0) blue:(230/255.0) alpha:1]];
 }
 - (IBAction)actionD:(id)sender {
     [self setButtonColor:(id)sender];
     
     MyManager *sharedManager = [MyManager sharedManager];
     NSMutableArray *the = sharedManager.theArray;
-    [the replaceObjectAtIndex:_pageIndex withObject:[NSNumber numberWithInt:-2]];
+    //[the replaceObjectAtIndex:_pageIndex withObject:[NSNumber numberWithInt:-2]];
+    if(flip)
+    {
+        [the replaceObjectAtIndex:_pageIndex withObject:[NSNumber numberWithInt:-2]];
+    }
+    else{
+        [the replaceObjectAtIndex:_pageIndex withObject:[NSNumber numberWithInt:2]];
+    }
     
     NSInteger count = 0;
-    for (NSString *tes in the){
-        NSLog(@"array print(the) %i (%i): %@", count, _pageIndex, tes);
+    for (NSString *tes in the)
+    {
+        NSLog(@"array print(the) %li (%lu): %@", (long)count, (unsigned long)_pageIndex, tes);
         count += 1;
     }
     
-    [buttonB setBackgroundColor:[UIColor clearColor]];
-    [buttonC setBackgroundColor:[UIColor clearColor]];
-    [buttonA setBackgroundColor:[UIColor clearColor]];
+    [buttonB setBackgroundColor:[UIColor colorWithRed:(230/255.0) green:(230/255.0) blue:(230/255.0) alpha:1]];
+    [buttonC setBackgroundColor:[UIColor colorWithRed:(230/255.0) green:(230/255.0) blue:(230/255.0) alpha:1]];
+    [buttonA setBackgroundColor:[UIColor colorWithRed:(230/255.0) green:(230/255.0) blue:(230/255.0) alpha:1]];
     
 }
 

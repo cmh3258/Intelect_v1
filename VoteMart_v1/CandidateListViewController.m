@@ -10,8 +10,12 @@
 #import "CandidateCell.h"
 #import "AFNetworking.h"
 #import "CandidateViewController.h"
+#import "MyManager.h"
 
 @interface CandidateListViewController ()
+{
+    UIActivityIndicatorView *spinner;
+}
 @property(strong) NSDictionary *weather;
 @property(strong) NSArray *sideBar;
 @property(strong, nonatomic)NSMutableArray *alphabetArray;
@@ -92,11 +96,26 @@
 {
     [super viewDidLoad];
 
+    /*
+     *  Get your political party
+     */
+    MyManager *sharedManager = [MyManager sharedManager];
+    NSString *yourParty = sharedManager.yourPartySimple;
+    yourParty = [[NSUserDefaults standardUserDefaults] stringForKey:@"yourPartySimple"];
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    spinner = [[UIActivityIndicatorView alloc]
+               initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    spinner.center = CGPointMake(160, 240);
+    spinner.hidesWhenStopped = YES;
+    [self.view addSubview:spinner];
+    [spinner startAnimating];
+    
     
     _carModels = @[@"hat",
                    @"car",
@@ -134,11 +153,23 @@
             NSString *electionOffice = [cb objectForKey:@"electionOffice"];
             NSString *electionParties = [cb objectForKey:@"electionParties"];
             
-            [self.electionOfficeArr addObject:electionOffice];
-            [self.electionPartyArr addObject:electionParties];
-            [self.candidateIdArr addObject:candidateId];
-            [self.ballotNamesArr addObject:ballotName];
-            
+            NSLog(@"Bout to match party: %@", yourParty);
+            if([yourParty isEqualToString:electionParties])
+            {
+                NSLog(@"matched your party! %@", yourParty);
+                [self.electionOfficeArr addObject:electionOffice];
+                [self.electionPartyArr addObject:electionParties];
+                [self.candidateIdArr addObject:candidateId];
+                [self.ballotNamesArr addObject:ballotName];
+            }
+            else if([yourParty isEqualToString:@"Independent"])
+            {
+                NSLog(@"Will show all since you are: %@", yourParty);
+                [self.electionOfficeArr addObject:electionOffice];
+                [self.electionPartyArr addObject:electionParties];
+                [self.candidateIdArr addObject:candidateId];
+                [self.ballotNamesArr addObject:ballotName];
+            }
             //[self.electionIdArray addObject:electionid];
             //[self.electionNameArray addObject:name];
             NSLog(@"Anser: %@ , %@, %@, %@", ballotName, candidateId, electionOffice, electionParties);
@@ -147,21 +178,23 @@
         //NSLog(@"...Calling get arrayofIds");
         //self.finalCandId = [self getArrayOfIds];
         
-        self.title = @"JSON Retrieved";
+        //self.title = @"JSON Retrieved";
         //NSLog(@"%i", self.electionIdArray.count);
         //NSLog(@"%i", self.electionNameArray.count);
         
         NSLog(@"finished");
         [self.tableView reloadData];
+        [spinner stopAnimating];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
         // 4
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Retrieving Weather"
+        NSLog(@"Error: %@", error);
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Connecting To Internet"
                                                             message:[error localizedDescription]
                                                            delegate:nil
-                                                  cancelButtonTitle:@"Ok"
-                                                  otherButtonTitles:nil];
+                                                  cancelButtonTitle:@"Okay"
+                                                  otherButtonTitles:nil, nil];
         [alertView show];
     }];
     
@@ -202,17 +235,7 @@
         
         detailViewController.candidateId = [_candidateIdArr objectAtIndex: myIndexPath.row];
     }
-}/*
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-    if([segue.identifier isEqualToString:@"candidateSeq"]){
-        UITableViewCell *cell = (UITableViewCell *)sender;
-        NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-        
-        CandidateViewController *wac = (CandidateViewController *)segue.destinationViewController;
-       
-    }
 }
-*/
 
 - (void)didReceiveMemoryWarning
 {
@@ -272,147 +295,21 @@
 }
  */
 
-/*
- This will return an array for the certain section. 
- The array will contains arrays of candidates
-    - name
-    - office
-    - party
-    - id
- */
-
-/*
--(NSMutableArray *)getArrayOfIds{
-    NSLog(@"..getArrayOfIds");
-    NSMutableArray *rowContainer = [[NSMutableArray alloc]initWithCapacity:0];
-    NSMutableArray *finalIds = [[NSMutableArray alloc]initWithCapacity:0];
-    //NSInteger count = 0;
-    NSString *sectionTitle;
-    NSString *rowTitle;
-    [self createAlphabetArray];
-    for(int i = 0; i<alphabetArray.count;i++)
-    {
-            sectionTitle = [alphabetArray objectAtIndex:i];
-            //NSLog(@"sectionTitle: %@", sectionTitle);
-            NSInteger count = 0;
-            for(NSString *title in _ballotNamesArr)
-            {
-                //NSLog(@"title: %@", title);
-                if (title.length > 0){
-                rowTitle = [title substringToIndex:1];
-                //NSLog(@"title: %@", rowTitle);
-                if([rowTitle isEqualToString:sectionTitle])
-                {
-                    //make array for new candidate
-                    //NSMutableArray *candidateNew = [[NSMutableArray alloc]initWithCapacity:0];
-                    NSString *finalId = [_candidateIdArr objectAtIndex:count];
-                    //NSLog(@"electionfinalID: %@", finalId);
-                    
-                    [finalIds addObject:finalId];
-                    //problem with this is that there they are just getting
-                    //added all together.
-                   // NSLog(@"added to finalIds");
-                }
-                count++;
-                //NSLog(@"count++");
-                }
-            }
-        }
-    
-    
-    NSLog(@"finished GetArrayofids");
-    
-    return finalIds;
-}
- */
-/*
--(NSMutableArray *)getArrayOfRowsForSection:(NSInteger)section{
-
-    NSLog(@"...Calling getArrayOfRows");
-    NSString *rowTitle;
-    NSString *sectionTitle;
-    NSMutableArray *rowContainer = [[NSMutableArray alloc]initWithCapacity:0];
-    self.final2CandId = [[NSMutableArray alloc]initWithCapacity:0];
-    for(int i =0; i<alphabetArray.count;i++){
-        if(section == i){
-        
-            sectionTitle = [alphabetArray objectAtIndex:i];
-            //NSLog(@"sectionTitle: %@", sectionTitle);
-            NSInteger count = 0;
-            for(NSString *title in _ballotNamesArr){
-                if(title.length > 0){
-                    //NSLog(@"(getarroyofrowsforsection) title: %@", title);
-                    rowTitle = [title substringToIndex:1];
-                    //NSLog(@"title: %@", rowTitle);
-                    if([rowTitle isEqualToString:sectionTitle]){
-                        //make array for new candidate
-                        NSMutableArray *candidateNew = [[NSMutableArray alloc]initWithCapacity:0];
-                    
-                    
-                    NSString *pl = [_electionOfficeArr objectAtIndex:count];
-                    NSString *dl = [_electionPartyArr objectAtIndex:count];
-                    NSString *finalId = [_candidateIdArr objectAtIndex:count];
-                    /*
-                    NSLog(@"electionballotName: %@", title);
-                    NSLog(@"electionoffice: %@", pl);
-                    NSLog(@"eletionParty: %@", dl);
-                    NSLog(@"electionfinalID: %@", finalId);
-                    */
-/*
-                    [candidateNew addObject:title];
-                    [candidateNew addObject:pl];
-                    [candidateNew addObject:dl];
-                    [candidateNew addObject:finalId];
-                    [rowContainer addObject:candidateNew];
-                    //problem with this is that there they are just getting
-                    //added all together.
-                }
-                count++;
-                }
-            }
-        }
-    }
-    //NSLog(@"count: %i", rowContainer.count);
-    //for (NSMutableArray *st in rowContainer)
-      //  NSLog(@"(getarray) IDS: %@", st);
-    return rowContainer;
-    
-    //return rowContainer;
-    //return 0;
-}
- */
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"CandidateCellC";
     CandidateCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
+    NSLog(@"ballot name: %@, int: %li", [_ballotNamesArr objectAtIndex:indexPath.row],(long)indexPath.row);
+    
     // Configure the cell...
-    /*
-    long row = [indexPath row];
-    cell.ballotName.text = _ballotNamesArr[row];
-    cell.partyName.text = _electionPartyArr[row];
-    cell.positionName.text = _electionOfficeArr[row];
-    */
-    
-    //NSArray *newer = [self titleForRow:indexPath];
-    /*
-    for (NSString *x in newer)
-        NSLog(@"final: %@", x);
-    */
-    
-    
-    NSLog(@"ballot name: %@, int: %i", [_ballotNamesArr objectAtIndex:indexPath.row],indexPath.row);
-    
     cell.ballotName.text = [_ballotNamesArr objectAtIndex:indexPath.row];
     cell.positionName.text = [_electionOfficeArr objectAtIndex:indexPath.row];
     cell.partyName.text = [_electionPartyArr objectAtIndex:indexPath.row];
-    
-    //[self.finalCandId addObject:[newer objectAtIndex:3]];
-    
-    cell.ballotName.font = [UIFont fontWithName:@"PTSans-Bold" size:16];
-    cell.positionName.font = [UIFont fontWithName:@"PTSans-Regular" size:12];
-    cell.partyName.font = [UIFont fontWithName:@"PTSans-Regular" size:11];
+
+    cell.ballotName.font = [UIFont fontWithName:@"PTSans-Bold" size:17];
+    cell.positionName.font = [UIFont fontWithName:@"PTSans-Regular" size:14];
+    cell.partyName.font = [UIFont fontWithName:@"PTSans-Regular" size:14];
     //cell.ballotName.numberOfLines = 2;
     
     return cell;
@@ -431,6 +328,7 @@
     //CandidateViewController *trailsController = [[CandidateViewController alloc]];
     //trailsController.candidateId = [self.finalCandId objectAtIndex:indexPath.row];
     //[[self navigationController] pushViewController:trailsController animated:YES];
+    */
     /*
     NSLog(@"(didselectrow) : %ld", (long)indexPath.row);
     NSLog(@"(didselectsection) : %ld", (long)indexPath.section);

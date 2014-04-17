@@ -15,7 +15,6 @@
 
 @implementation QuizViewController
 
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -30,18 +29,17 @@
     //this only loads once
     [super viewDidLoad];
     
-    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:(136/256.0) green:(6/256.0) blue:(6/256.0) alpha:(1.0)]];
+    //[[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:(136/256.0) green:(6/256.0) blue:(6/256.0) alpha:(1.0)]];
     self.navigationItem.hidesBackButton = YES;
     [self.navigationController.navigationBar setTranslucent:NO];
     self.title = @"Party Quiz";
     //self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"appcoda-logo.png"]];
     
+    self.view.backgroundColor = [UIColor colorWithRed:(160/255.0) green:(160/255.0) blue:(160/255.0) alpha:1];
     
     UIBarButtonItem *shareItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:nil];
     UIBarButtonItem *cameraItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:nil];
-    
     cameraItem.action = @selector(testit);
-    
     NSArray *actionButtonItems = @[shareItem, cameraItem];
     self.navigationItem.rightBarButtonItems = actionButtonItems;
     
@@ -49,7 +47,7 @@
     MyManager *sharedManager = [MyManager sharedManager];
     NSString *yoParty = sharedManager.yourParty;
     BOOL didAlready = [[NSUserDefaults standardUserDefaults] boolForKey:@"HasDoneQuiz"];
-    NSLog(@"yourParty you filled out: %@ %hhd", yoParty, didAlready);
+    NSLog(@"yourParty you filled out: %@ %d", yoParty, didAlready);
     
     if(didAlready)
     {
@@ -75,7 +73,6 @@
                     ];
     
     _pageImages = @[@"page1.png", @"page2.png", @"page3.png", @"page4.png"];
-    
     _arr = [[NSMutableArray alloc] init];
     
     // Create page view controller
@@ -92,16 +89,6 @@
     [self addChildViewController:_pageViewController];
     [self.view addSubview:_pageViewController.view];
     [self.pageViewController didMoveToParentViewController:self];
-    
-    /*
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [button addTarget:self
-               action:@selector(startWalkere)
-     forControlEvents:UIControlEventTouchUpInside];
-    [button setTitle:@"Show View" forState:UIControlStateNormal];
-    button.frame = CGRectMake(80.0, 340.0, 160.0, 40.0);
-    [self.view addSubview:button];
-    */
 }
 
 - (void)didReceiveMemoryWarning
@@ -121,7 +108,7 @@
     if([title isEqualToString:@"Okay"])
     {
         NSLog(@"Button 1 was selected.");
-        UIViewController * vc = [self.storyboard instantiateViewControllerWithIdentifier:@"rssFeed"];
+        UIViewController * vc = [self.storyboard instantiateViewControllerWithIdentifier:@"electionView"];
         [self.navigationController pushViewController:vc animated:YES];
     }
     else if([title isEqualToString:@"Retake"])
@@ -137,18 +124,20 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (IBAction)startWalkere{
+/*
+- (IBAction)startWalkere
+{
     NSLog(@"back back back");
 }
 
-- (IBAction)startWalker:(id)sender {
-    
+- (IBAction)startWalker:(id)sender
+{
     NSLog(@"hello thesre");
     PageContentViewController *startingViewController = [self viewControllerAtIndex:0];
     NSArray *viewControllers = @[startingViewController];
     [self.pageViewController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
 }
-
+ */
 
 #pragma mark - Page View Controller Data Source
 
@@ -162,7 +151,8 @@
     NSLog(@"...before controller");
     NSUInteger index = ((PageContentViewController*) viewController).pageIndex;
     
-    if ((index == 0) || (index == NSNotFound)) {
+    if ((index == 0) || (index == NSNotFound))
+    {
         return nil;
     }
     
@@ -179,18 +169,21 @@
     if(test>0)
         [self.arr addObject:@"play"];
     
-    NSLog(@"afterView: %i, %i", index, test);
+    NSLog(@"afterView: %lu, %li", (unsigned long)index, (long)test);
     
-    for (NSString *tes in self.arr){
+    for (NSString *tes in self.arr)
+    {
         NSLog(@"array main: %@", tes);
     }
     
-    if (index == NSNotFound) {
+    if (index == NSNotFound)
+    {
         return nil;
     }
     
     index++;
-    if (index == [self.pageTitles count]) {
+    if (index == [self.pageTitles count])
+    {
         return nil;
     }
     return [self viewControllerAtIndex:index];
@@ -201,37 +194,17 @@
     if (([self.pageTitles count] == 0) || (index >= [self.pageTitles count])) {
         return nil;
     }
-    
-    NSLog(@"count: %i index: %i", [self.pageTitles count], index);
-    
-    NSInteger cou = [self.pageTitles count];
-    
-    /*
-    if (self.pageTitles[index] == self.pageTitles[cou-1]) {
-        NSLog(@"here");
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [button addTarget:self
-                   action:@selector(aMethod:)
-         forControlEvents:UIControlEventTouchUpInside];
-        [button setTitle:@"Show View" forState:UIControlStateNormal];
-        button.frame = CGRectMake(80.0, 240.0, 160.0, 40.0);
-        [self.view addSubview:button];
-        
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Really reset?" message:@"Do you really want to reset this game?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
-        // optional - add more buttons:
-        [alert addButtonWithTitle:@"Yes"];
-        [alert show];
-    }
-     */
+    NSLog(@"count: %lu index: %lu", (unsigned long)[self.pageTitles count], (unsigned long)index);
+    //NSInteger cou = [self.pageTitles count];
     
     // Create a new view controller and pass suitable data.
     PageContentViewController *pageContentViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"PageContentViewController"];
-    NSLog(@">>loaded page %i", index);
+    NSLog(@">>loaded page %lu", (unsigned long)index);
     
     //pageContentViewController.imageFile = self.pageImages[index];
     pageContentViewController.titleText = self.pageTitles[index];
     pageContentViewController.pageIndex = index;
-    
+
     return pageContentViewController;
 }
 

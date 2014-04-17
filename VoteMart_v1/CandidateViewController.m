@@ -10,6 +10,9 @@
 #import "AFNetworking.h"
 
 @interface CandidateViewController ()
+{
+    UIActivityIndicatorView *spinner;
+}
 @property(strong) NSDictionary *weather;
 
 @end
@@ -30,6 +33,13 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    spinner = [[UIActivityIndicatorView alloc]
+               initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    spinner.center = CGPointMake(160, 240);
+    spinner.hidesWhenStopped = YES;
+    [self.view addSubview:spinner];
+    [spinner startAnimating];
+    
     NSURL *baseURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://api.votesmart.org/CandidateBio.getBio?o=JSON&key=%@&candidateId=%@", votesmartID, self.candidateId]];
     
     //   NSURL *url = [NSURL URLWithString:string];
@@ -45,11 +55,15 @@
         self.weather = (NSDictionary *)responseObject;
         NSLog(@"%@",self.weather);
         NSDictionary *dict = [self.weather objectForKey:@"bio"];
-        NSDictionary *candidateInfo = [dict objectForKey:@"candidate"];
-        NSDictionary *electionInfo = [dict objectForKey:@"election"];
-        //NSLog(@"newy: %@", candidateInfo);
+        //NSDictionary *candidateInfo = [dict objectForKey:@"candidate"];
+        //NSDictionary *electionInfo = [dict objectForKey:@"election"];
+        NSDictionary *generalInfo = [dict objectForKey:@"generalInfo"];
         
+        //NSLog(@"newy: %@", candidateInfo);
         //NSLog(@"next newy: %@", [candidateInfo objectForKey:@"education"]);
+        
+        NSString *bioLink = [generalInfo objectForKey:@"linkBack"];
+        /*
         NSString *fname = [candidateInfo objectForKey:@"firstName"];
         NSString *lname = [candidateInfo objectForKey:@"lastName"];
         NSString *photo = [candidateInfo objectForKey:@"photo"];
@@ -58,7 +72,6 @@
         NSString *orgMembership = [candidateInfo objectForKey:@"orgMembership"];
         NSString *profession = [candidateInfo objectForKey:@"profession"];
         NSString *religion = [candidateInfo objectForKey:@"religion"];
-        
         NSString *office = [electionInfo objectForKey:@"office"];
         NSString *officeType = [electionInfo objectForKey:@"officeType"];
         NSString *parties = [electionInfo objectForKey:@"parties"];
@@ -70,7 +83,6 @@
         NSURL * imageURL = [NSURL URLWithString:photo];
         NSData * imageData = [NSData dataWithContentsOfURL:imageURL];
         UIImage * image = [UIImage imageWithData:imageData];
-        
         NSString *fullname = [fname stringByAppendingString:@" "];
         fullname = [fullname stringByAppendingString:lname];
         
@@ -84,22 +96,31 @@
         
         NSLog(@"infofull: %@", infoFull);
         
-        self.candidateName.text = fullname;
-        self.candidateBirthPlace.text = education;
-        self.candidateF.text = office;
-        self.candidateGroups.text = infoFull;
-        self.candidateGroups.numberOfLines = 0;
+        self.firstname.text = fname;
+        self.lastname.text = lname;
+        self.firstname.font = [UIFont fontWithName:@"PTSans-Bold" size:28];
+        self.lastname.font = [UIFont fontWithName:@"PTSans-Bold" size:28];
+        self.sublabel.text = parties;
+        self.sublabel.font = [UIFont fontWithName:@"PTSans-Regular" size:14];
         
-        self.candidateImage.image = image;
+        self.profPic.image = image;
+        */
+        
+        NSURL *myURL = [NSURL URLWithString: [bioLink stringByAddingPercentEscapesUsingEncoding:
+                                              NSUTF8StringEncoding]];
+        NSURLRequest *request = [NSURLRequest requestWithURL:myURL];
+        [self.bioView loadRequest:request];
+        [spinner stopAnimating];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
         // 4
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Retrieving Weather"
+        NSLog(@"Error: %@", error);
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Connecting To Internet"
                                                             message:[error localizedDescription]
                                                            delegate:nil
-                                                  cancelButtonTitle:@"Ok"
-                                                  otherButtonTitles:nil];
+                                                  cancelButtonTitle:@"Okay"
+                                                  otherButtonTitles:nil, nil];
         [alertView show];
     }];
     

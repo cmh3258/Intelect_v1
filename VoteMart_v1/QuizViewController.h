@@ -11,8 +11,8 @@
 
 @interface QuizViewController : UIViewController <UIPageViewControllerDataSource, UIAlertViewDelegate>
 
-- (IBAction)startWalk:(id)sender;
-- (IBAction)startWalker:(id)sender;
+//- (IBAction)startWalk:(id)sender;
+//- (IBAction)startWalker:(id)sender;
 
 @property (strong, nonatomic) UIPageViewController *pageViewController;
 @property (strong, nonatomic) NSArray *pageTitles;

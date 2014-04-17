@@ -12,8 +12,8 @@
 @interface PageContentViewController : UIViewController<UIAlertViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
-- (IBAction)buttonOne:(id)sender;
-- (IBAction)buttonTwo:(id)sender;
+//- (IBAction)buttonOne:(id)sender;
+//- (IBAction)buttonTwo:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UIButton *buttonA;
 - (IBAction)actionA:(id)sender;

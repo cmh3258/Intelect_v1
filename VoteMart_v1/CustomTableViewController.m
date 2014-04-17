@@ -15,6 +15,9 @@
 static NSString * const BaseURLString = @"http://www.raywenderlich.com/demos/weather_sample/";
 
 @interface CustomTableViewController ()
+{
+    UIActivityIndicatorView *spinner;
+}
 
 @property(strong) NSDictionary *weather;
 @property(strong) NSArray *sideBar;
@@ -78,9 +81,10 @@ static NSString * const BaseURLString = @"http://www.raywenderlich.com/demos/wea
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-        self.SideBarButton.tintColor = [UIColor colorWithWhite:0.96f alpha:0.2f];
-        [self.navigationController.navigationBar setTranslucent:NO];
         
+        self.SideBarButton.tintColor = [UIColor colorWithWhite:0.96f alpha:0.8f];
+        [self.navigationController.navigationBar setTranslucent:NO];
+        self.SideBarButton.title=@"Menu";
         
         // Set the side bar button action. When it's tapped, it'll show up the sidebar.
         [self.SideBarButton setTarget: self.revealViewController];
@@ -90,14 +94,19 @@ static NSString * const BaseURLString = @"http://www.raywenderlich.com/demos/wea
         // Set the gesture
         [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
         
+        spinner = [[UIActivityIndicatorView alloc]
+                   initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        spinner.center = CGPointMake(160, 240);
+        spinner.hidesWhenStopped = YES;
+        [self.view addSubview:spinner];
+        [spinner startAnimating];
         
     _electionYear = [[NSMutableArray alloc] init];
     
-    
+    /*
     _sideBar = @[@"a",@"b",@"c",@"d",@"e",@"f",@"g",@"h",@"i",@"j",@"k",@"l",@"m",@"n",@"o",@"p",@"q",@"r",@"s",@"t",@"u",@"v",@"w",@"x",@"y",@"z"];
-    
-    
-    
+    */
+        
     _carModels = @[@"Volt",
                    @"Mini",
                    @"Venza",
@@ -140,21 +149,24 @@ static NSString * const BaseURLString = @"http://www.raywenderlich.com/demos/wea
             [self.electionYear addObject:year];
             NSLog(@"Anser: %@ , %@, %@", electionid, name, year);
         }
-        self.title = @"JSON Retrieved";
+        /*
+        //self.title = @"JSON Retrieved";
         NSLog(@"%i", self.electionIdArray.count);
         NSLog(@"%i", self.electionNameArray.count);
         NSLog(@"finished");
-        
+        */
         [self.tableView reloadData];
+        [spinner stopAnimating];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
         // 4
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Retrieving Weather"
+        NSLog(@"Error: %@", error);
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Connecting To Internet"
                                                             message:[error localizedDescription]
                                                            delegate:nil
-                                                  cancelButtonTitle:@"Ok"
-                                                  otherButtonTitles:nil];
+                                                  cancelButtonTitle:@"Okay"
+                                                  otherButtonTitles:nil, nil];
         [alertView show];
     }];
     
@@ -162,6 +174,7 @@ static NSString * const BaseURLString = @"http://www.raywenderlich.com/demos/wea
     
     // 5
     [operation start];
+    
     }
  
 }
@@ -170,17 +183,16 @@ static NSString * const BaseURLString = @"http://www.raywenderlich.com/demos/wea
  This is where the search bar functionality works.
  */
 
+/*
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     NSLog(@"sarch results: %@", searchBar.text);
 }
+*/
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
+/*
+ *  Responding to the alertview
+ */
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     NSLog(@"the is the alertView");
@@ -192,10 +204,12 @@ static NSString * const BaseURLString = @"http://www.raywenderlich.com/demos/wea
         UIViewController * vc = [self.storyboard instantiateViewControllerWithIdentifier:@"quizPage"];
         [self.navigationController pushViewController:vc animated:YES];
     }
-    else if([title isEqualToString:@"Cancel"])
-    {
-        NSLog(@"Button 2 was selected.");
-    }
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Table view data source
@@ -222,12 +236,8 @@ static NSString * const BaseURLString = @"http://www.raywenderlich.com/demos/wea
     long row = [indexPath row];
     cell.carModel.numberOfLines = 0;
     cell.carModel.text = _electionNameArray[row];
-    //cell.electionYear.text = _electionYear[row];
-    
     cell.carModel.font = [UIFont fontWithName:@"PTSans-Bold" size:16];
     cell.carModel.numberOfLines = 2;
-    
-    
     return cell;
 }
 /*
