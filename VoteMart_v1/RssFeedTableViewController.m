@@ -1,6 +1,6 @@
 //
 //  RssFeedTableViewController.m
-//  VoteMart_v1
+//  Intelect_v1
 //
 //  Created by Chris Hume on 3/19/14.
 //  Copyright (c) 2014 YeddieJones. All rights reserved.
@@ -11,12 +11,12 @@
 #import "AFNetworking.h"
 #import "NSDate+InternetDateTime.h"
 #import "RssDetailViewController.h"
+#import "SWRevealViewController.h"
 
 @interface RssFeedTableViewController ()
 {
     NSArray *feeds;
     NSArray *listOfFeeds;
-    
     NSXMLParser *parser;
     NSMutableArray *feeder;
     NSMutableDictionary *item;
@@ -27,10 +27,12 @@
     NSMutableString *content;
     NSMutableString *date;
     NSMutableString *pubDate;
-    //NSMutableString *update;
     NSString *element;
-    
     NSInteger feedCount;
+    
+    BOOL isT;
+    NSError *error_m;
+    UIActivityIndicatorView *spinner;
 }
 
 @end
@@ -50,11 +52,49 @@
 {
     [super viewDidLoad];
 
+    /*
+     *  Detecting first launch
+     */
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"HasLaunchedOnce"])
+    {
+        // app already launched
+        NSLog(@"app already launched");
+    
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasLaunchedOnce"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        // This is the first launch ever
+        NSLog(@"first launch ever");
+        
+        UIViewController * vc = [self.storyboard instantiateViewControllerWithIdentifier:@"zipScreen"];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    else
+    {
+        
+    [self.navigationController setNavigationBarHidden:NO];
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+        
+    // Change button color
+    self.sideBarButton.tintColor = [UIColor colorWithWhite:0.96f alpha:0.8f];
+    [self.navigationController.navigationBar setTranslucent:NO];
+    self.sideBarButton.title = @"Menu";
+
+    //self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"NavBar.png"]];
+        
+    // Set the side bar button action. When it's tapped, it'll show up the sidebar.
+    [self.sideBarButton setTarget: self.revealViewController];
+    [self.sideBarButton setAction: @selector( revealToggle: )];
+    [self.navigationController.navigationBar addGestureRecognizer: self.revealViewController.panGestureRecognizer];
+    
+    // Set the gesture
+    [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
+    
     feedCount = 0;
     feeds = @[@"Volt",
                    @"Mini",
@@ -65,75 +105,42 @@
     feeder = [[NSMutableArray alloc] init];
     listOfFeeds = [[NSArray alloc] init];
     
+    spinner = [[UIActivityIndicatorView alloc]
+                                            initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    spinner.center = CGPointMake(160, 240);
+    spinner.hidesWhenStopped = YES;
+    [self.view addSubview:spinner];
+    [spinner startAnimating];
+        
     listOfFeeds = @[
                     @"http://www.opensecrets.org/news/atom.xml",
-                    
                     @"http://rss.cnn.com/rss/cnn_allpolitics.rss",
                     @"http://www.npr.org/rss/rss.php?id=1014",
                     @"http://rssfeeds.usatoday.com/TP-OnPolitics",
                     @"http://feeds.feedburner.com/projectvotesmart"
                     ];
-    
-    //feed://rss.cnn.com/rss/cnn_topstories.rss
-    //feed://rss.cnn.com/rss/cnn_allpolitics.rss
-    //feed://www.npr.org/rss/rss.php?id=1014
-    //http://content.usatoday.com/marketing/rss/rsstrans.aspx?feedId=news25
-    //feed://rssfeeds.usatoday.com/TP-OnPolitics
-    
-    //iffy rss feeds
-    //http://votesmart.org/rss/key-votes
-    //@"http://feeds.feedburner.com/SunlightFoundationReportingGroup",
-    //@"http://rss.cnn.com/rss/cnn_topstories.rss", - not news
+
     
     /*
-    NSURL *url = [NSURL URLWithString:@"http://www.opensecrets.org/news/atom.xml"];
-    parser = [[NSXMLParser alloc] initWithContentsOfURL:url];
-    [parser setDelegate:self];
-    [parser setShouldResolveExternalEntities:NO];
-    [parser parse];
-    */
-    
-    /*
-    NSString *feed = @"http://feeds.feedburner.com/RayWenderlich";
-    NSURL *baseURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@",feed]];
-    NSURLRequest *request = [NSURLRequest requestWithURL:baseURL];
-    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    
-    // Make sure to set the responseSerializer correctly
-    operation.responseSerializer = [AFXMLParserResponseSerializer serializer];
-    operation.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/atom+xml"];
-    operation.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/rss+xml", @"application/atom+xml",nil];
-    
-    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        NSXMLParser *XMLParser = (NSXMLParser *)responseObject;
-        [XMLParser setShouldProcessNamespaces:YES];
-        NSLog(@"%@", (NSXMLParser *)responseObject);
-        // Leave these commented for now (you first need to add the delegate methods)
-        
-        XMLParser.delegate = self;
-        [XMLParser parse];
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-        NSLog(@"Error: %@", error);
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Retrieving Weather"
-                                                            message:[error localizedDescription]
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"Ok"
-                                                  otherButtonTitles:nil];
-        [alertView show];
-        
-    }];
-    [operation start];
-     
-}
+     *  RSS Feeds
+     *
+     feed://rss.cnn.com/rss/cnn_topstories.rss
+     feed://rss.cnn.com/rss/cnn_allpolitics.rss
+     feed://www.npr.org/rss/rss.php?id=1014
+     http://content.usatoday.com/marketing/rss/rsstrans.aspx?feedId=news25
+     feed://rssfeeds.usatoday.com/TP-OnPolitics
+     --
+     http://votesmart.org/rss/key-votes
+     http://feeds.feedburner.com/SunlightFoundationReportingGroup
+     http://rss.cnn.com/rss/cnn_topstories.rss - not news
+     *
      */
-    
+     
     NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
     NSInteger count = 0;
+        isT = YES;
     for (NSString *feed in listOfFeeds) {
-        NSLog(@"count: %i. Feed: %@", count, feed);
+        NSLog(@"count: %li. Feed: %@", (long)count, feed);
         NSURL *baseURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@",feed]];
         NSURLRequest *request = [NSURLRequest requestWithURL:baseURL];
         AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
@@ -156,24 +163,36 @@
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             
             NSLog(@"Error: %@", error);
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Retrieving Weather"
-                                                                message:[error localizedDescription]
-                                                               delegate:nil
-                                                      cancelButtonTitle:@"Ok"
-                                                      otherButtonTitles:nil];
-            [alertView show];
-            
+            isT = NO;
+            error_m = error;
+            NSLog(@"count: %li lof: %lu", (long)count, (unsigned long)[listOfFeeds count]);
+            if(count == [listOfFeeds count]-1)
+            {
+                [self callAlert];
+            }
         }];
         count++;
     
         //[request setDelegate:self];
-        
+        NSLog(@"adding to queue");
         [operationQueue addOperation:operation];
-  
     }
-    
     }
+}
 
+-(void)callAlert
+{
+    if(!isT)
+    {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Connecting To Internet"
+                                                            message:[error_m localizedDescription]
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"Okay"
+                                                  otherButtonTitles:nil, nil];
+        [alertView show];
+        [spinner stopAnimating];
+    }
+}
 
 - (void)didReceiveMemoryWarning
 {
@@ -206,12 +225,7 @@
     RssCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     // Configure the cell...
-    //cell.titleRSS.text = [feeds objectAtIndex:indexPath.row];
-   
     cell.titleRSS.text = [[feeder objectAtIndex:indexPath.row] objectForKey: @"title"];
-
-    //cell.titleRSS.text = @"Test";
-    //cell.titleRSS.numberOfLines = 2;
     
     //cell.titleRSS.numberOfLines = 2;
     //[cell.titleRSS sizeToFit];
@@ -220,32 +234,38 @@
     NSString *dummy = [[feeder objectAtIndex:indexPath.row] objectForKey: @"description"];
     
     //NSLog(@"summary: %@, description: %@", summy, dummy);
-    
-    
     if([summy length]==0)
         cell.summaryRSS.text = dummy;
     else
         cell.summaryRSS.text = summy;
     
+    cell.titleRSS.font = [UIFont fontWithName:@"PTSans-Bold" size:16];
+    cell.titleRSS.numberOfLines = 2;
+    //cell.titleRSS.lineBreakMode = UILineBreakModeWordWrap;
+    cell.summaryRSS.font = [UIFont fontWithName:@"PTSans-Regular" size:12];
+    cell.summaryRSS.numberOfLines = 2;
+    
    // cell.summaryRSS.text = @"";
-
     NSDate *newDate = [[feeder objectAtIndex:indexPath.row] objectForKey: @"date"];
     NSLog(@"pub: %@.", newDate);
     
-    //convert the date
+    /*
+     *convert the date
+     */
     //NSDate *articleDate = [NSDate dateFromInternetDateTimeString:pubby formatHint:DateFormatHintRFC822];
-   //NSDate *articleDate2 = [NSDate dateFromInternetDateTimeString:puddy formatHint:DateFormatHintRFC3339];
-    
-    /************/
+    //NSDate *articleDate2 = [NSDate dateFromInternetDateTimeString:puddy formatHint:DateFormatHintRFC3339];
     //NSString *dateString = @"Mon, 03 May 2010 18:54:26 +00:00";
     //NSString *dally = @"Fri, 14 Mar 2014 21:00:56 +0000";
     
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-    [dateFormat setDateFormat:@"MM.dd.yyyy"];
+    [dateFormat setDateFormat:@"MM.dd"];
     NSString *dateStr1 = [dateFormat stringFromDate:newDate];
     //NSLog(@"(()()(>>>dateStr1 = %@", dateStr1);
     cell.dateRSS.text = dateStr1;
-    
+    //[cell.dateRSS setTextColor: [UIColor colorWithRed:(37/256.0) green:(236/256.0) blue:(110/256.0) alpha:(1.0)]];
+    [cell.dateRSS setTextColor:[UIColor darkGrayColor]];
+    cell.dateRSS.font = [UIFont fontWithName:@"PTSans-Bold" size:12];
+
     
     //change the format displayed
     /*
@@ -378,7 +398,7 @@
         [dateFormat setLocale:locale];
         [dateFormat2 setLocale:locale];
         
-        NSLog(@")))>> date in check: %@ %i", date, [date length]);
+        NSLog(@")))>> date in check: %@ %lu", date, (unsigned long)[date length]);
         if([date length]==0){
             NSLog(@"Has pubdate: %@", pubDate);
             NSString *linkTrim1 = [pubDate stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -480,10 +500,12 @@
     
     feeder = [sortedArray mutableCopy];
 
-    
+    NSLog(@"down here");
     if(feedCount == [listOfFeeds count])
+    {
+        [spinner stopAnimating];
         [self reloadTheTable];
-    
+    }
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {

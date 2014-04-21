@@ -1,6 +1,6 @@
 //
 //  AppDelegate.m
-//  VoteMart_v1
+//  Intelect_v1
 //
 //  Created by Recommenu on 3/19/14.
 //  Copyright (c) 2014 YeddieJones. All rights reserved.
@@ -12,9 +12,31 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
-    //[[UINavigationBar appearance] setBarTintColor:[UIColor yellowColor]];
-    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:(20/256.0) green:(255/256.0) blue:(20/256.0) alpha:(1.0)]];
+    //[UIColor colorWithRed:(0/255.0) green:(204/255.0) blue:(102/255.0) alpha:1].CGColor]
+    
+    /*
+     * Override point for customization after application launch.
+     */
+    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:(10/256.0) green:(225/256.0) blue:(102/256.0) alpha:(1.0)]];
+    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:(37/256.0) green:(236/256.0) blue:(110/256.0) alpha:(1.0)]];
+
+    [[UINavigationBar appearance] setTitleTextAttributes: [NSDictionary dictionaryWithObjectsAndKeys:
+                    [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0], NSForegroundColorAttributeName,
+                        NULL, NSShadowAttributeName,
+                        [UIFont fontWithName:@"PTSans-Bold" size:21.0], NSFontAttributeName, nil]];
+    
+    
+    /*
+     *  Page Controller settings
+     */
+    UIPageControl *pageControl = [UIPageControl appearance];
+    pageControl.pageIndicatorTintColor = [UIColor whiteColor];
+    pageControl.currentPageIndicatorTintColor = [UIColor colorWithRed:(37/255.0) green:(225/255.0) blue:(102/255.0) alpha:1];
+    pageControl.backgroundColor = [UIColor colorWithRed:(160/255.0) green:(160/255.0) blue:(160/255.0) alpha:1];
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    //[[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+    
     return YES;
 }
 							
